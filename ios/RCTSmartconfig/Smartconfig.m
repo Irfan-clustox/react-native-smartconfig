@@ -109,7 +109,7 @@ RCT_EXPORT_METHOD(start:(NSDictionary *)options
             if(resolved)
                 resolve(ret);
             else
-                reject(RCTErrorUnspecified, nil, RCTErrorWithMessage(@"Timoutout or not Found"));
+                reject(RCTErrorUnspecified, nil, RCTErrorWithMessage(@"Timeoutout or not Found"));
             
             
         });
@@ -139,11 +139,10 @@ RCT_EXPORT_METHOD(start:(NSDictionary *)options
     NSString *ssid = [self.options valueForKey:@"ssid"];
     NSString *password = [self.options valueForKey:@"password"];
     NSString *bssid = [self.options valueForKey:@"bssid"];
+    int timeoutMillisecond = [[self.options valueForKey:@"timeout"] intValue];
     BOOL hidden = [self.options valueForKey:@"hidden"];
-    
-    RCTLogInfo(@"ssid %@ pass %@ bssid %@", ssid, password, bssid);
-    self._esptouchTask =
-    [[ESPTouchTask alloc]initWithApSsid:ssid andApBssid:bssid andApPwd:password andIsSsidHiden:hidden];
+    RCTLogInfo(@"ssid %@ pass %@ bssid %@ timeout %d", ssid, password, bssid,timeoutMillisecond);
+    self._esptouchTask = [[ESPTouchTask alloc]initWithApSsid:ssid andApBssid:bssid andApPwd:password andIsSsidHiden:hidden andTimeoutMillisecond:timeoutMillisecond];
     // set delegate
     [self._esptouchTask setEsptouchDelegate:self._esptouchDelegate];
     [self._condition unlock];
